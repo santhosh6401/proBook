@@ -73,7 +73,7 @@ export default function Allprofiles() {
       });
   }, []);
 
-  const handleOpen = (index) => {
+  const handleOpen = () => {
     setLoading(true);
     setDialogOpen(true);
     setDataIndex(0);
@@ -172,7 +172,7 @@ export default function Allprofiles() {
                       fontSize:"13px"
                     }}
                     disabled={loading}
-                    onClick={handleOpen(item.indexCount)}
+                    onClick={handleOpen}
                   >
                     <Typography style = {{fontFamily: "Monospace"}} >Learn...</Typography>
                   </Button>
