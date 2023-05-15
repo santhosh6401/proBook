@@ -1,234 +1,197 @@
 import React from "react";
 import "./../assets/style/MainPage.css";
+import ProBookLogo from './../assets/images/ProBook.png'
+import { Typography, Grid, Button, Dialog, DialogContent, useDialog, DialogContentText, DialogActions, useTheme, useMediaQuery, DialogTitle } from "@mui/material";
+import MUIDataTable from "mui-datatables";
+import { Edit, Delete } from "@mui/icons-material";
+import EditProfile from '../mainlayout/EditProfile'
+function History() {
+  const [data, setData] = React.useState();
+  const [overlay, setOverlay] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [details, setDetails] = React.useState([])
+  const [changed, setChanged] = React.useState(0)
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const fetchData = async () => {
+    const response = await fetch(
+      "http://localhost:8095/profile-management/v1/profile"
+    );
+    if (!response.ok) {
+      throw new Error("Data could not be fetched!");
+    } else {
+      return response.json();
+    }
+  };
+  React.useEffect(() => {
+    fetchData()
+      .then((res) => {
+        setData(res);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+    // setChanged(changed)
+  }, []);
+  const handleClose = () => {
+    setDialogOpen(false)
+  }
 
-function Profile() {
+  const deleteButton = async (user) => {
+    console.log(user[5], 'user12')
+    try {
+      const response = await fetch(`http://localhost:8095/profile-management/v1/profile?emailId=${user[5]}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        // Successful request
+        console.log('POST request successful');
+      } else {
+        // Request failed
+        console.error('POST request failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  const columns = [
+    {
+      name: 'firstname',
+      label: 'First Name'
+
+    },
+    {
+      name: 'lastname',
+      label: 'Last Name'
+
+    },
+    {
+      name: 'batch',
+      label: 'Batch'
+
+    },
+    {
+      name: 'department',
+      label: 'DepartMent'
+
+    },
+    {
+      name: 'mobileNo',
+      label: 'Mobile No'
+
+    },
+    {
+      name: 'emailId',
+      label: 'Email Id'
+
+    },
+    {
+      name: 'currentOccupation',
+      label: 'Current Occupation'
+    },
+    {
+      name: 'linkedInProfileUrl',
+      label: 'linkedInProfileUrl ',
+      options: {
+        viewColumns: true,
+        display: false,
+      }
+    },
+    {
+      name: 'linkedInUrl',
+      label: 'linkedInUrl ',
+      options: {
+        viewColumns: true,
+        display: false
+      }
+    },
+    {
+      name: '',
+      label: '',
+      options: {
+        filter: true,
+        sort: false,
+        display: true,
+        customBodyRender: (value, table) => {
+          return (
+            <>
+              <Grid style={{ display: 'flex' }}>
+                <Grid onClick={() => {
+                  setDetails(table.tableData[table.rowIndex]);
+                  setOverlay('EDIT')
+                }}
+                >
+                  <Edit style={{ color: "lightblue" }}/><br />
+
+                </Grid>
+                <Grid onClick={() => {
+                  deleteButton(table.tableData[table.rowIndex]);
+                  // setOverlay('EDIT')
+                }}
+                >
+                  &nbsp;&nbsp;
+                  <Delete style={{ color: "red" }}/>
+
+                </Grid>
+              </Grid>
+
+
+            </>
+          );
+        }
+      }
+    }
+  ]
+  const options = {
+    viewColumns: true
+  }
   return (
-    <div>
-      <div className="row Grid">
-        <div className="col-md-3"></div>
-        <div className="col-md-1"></div>
+    <div >
+      <Grid style={{ width: '100%', backgroundColor: 'grey' ,fontFamily:"monospace"}}>
+        <MUIDataTable
+          title={'PROFILE'}
+          data={data}
+          columns={columns}
+          options={options}
+        >
 
-        {/* Create Profile */}
+        </MUIDataTable>
+      </Grid>
+      <Dialog
+        fullScreen={fullScreen}
+        open={overlay}
+        // value={profile}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">
+          Edit Profile
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText style={{fontFamily:"monospace"}}>
+            {overlay === 'EDIT' && <EditProfile Details={details} setDetails={setDetails} onClose={() => { setOverlay(false) }} />}
+            {/* {overlay === 'EDIT' && <EditProfile />} */}
 
-        <div className="col-md-3 ColumnFormProfile">
-          <p className="FormTitle text-center text-warning">
-            <u> Create Profile </u>
-          </p>
-          <br></br>
-          <form className="Form text-white">
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="firstName"
-                aria-describedby="firstName"
-                placeholder="Enter the firstName"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="LastName"
-                aria-describedby="LastName"
-                placeholder="Enter the LastName"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="Department"
-                aria-describedby="Department"
-                placeholder="Enter the Department"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="Batch"
-                aria-describedby="Batch"
-                placeholder="Enter the Batch"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="MobileNo"
-                aria-describedby="MobileNo"
-                placeholder="Enter the Mobile No"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="EmailId"
-                aria-describedby="EmailId"
-                placeholder="Enter the Email Id"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="LinkedInUrl"
-                aria-describedby="LinkedInUrl"
-                placeholder="Enter the LinkedInUrl"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="Profile"
-                aria-describedby="Profile"
-                placeholder="Enter the Profile Picture Url"
-              />
-            </div>
-            <br></br>
-            <br></br>
-            <input
-              type="submit"
-              value="Create Profile"
-              className="btn text-dark text-center LoginButton"
-            />
-            <br></br>
-            <br></br>
-            <br></br>
-            {/* <Link to="/main"> go </Link> */}
-          </form>
-        </div>
-        <div className="col-md-1"></div>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => { setOverlay(false) }}>
+            cancel
+          </Button>
+          {/* <Button onClick={handleClose} autoFocus>
+              Agree
+            </Button> */}
+        </DialogActions>
+      </Dialog>
 
-        {/* Update Profile */}
-
-        <div className="col-md-3 ColumnFormProfile text-dark">
-          <p className="FormTitle text-center text-warning">
-            <u> Update Profile </u>
-          </p>
-          <br></br>
-          <form className="Form text-white">
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="firstName"
-                aria-describedby="firstName"
-                placeholder="Enter the firstName"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="LastName"
-                aria-describedby="LastName"
-                placeholder="Enter the LastName"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="Department"
-                aria-describedby="Department"
-                placeholder="Enter the Department"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="Batch"
-                aria-describedby="Batch"
-                placeholder="Enter the Batch"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="MobileNo"
-                aria-describedby="MobileNo"
-                placeholder="Enter the Mobile No"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="EmailId"
-                aria-describedby="EmailId"
-                placeholder="Enter the Email Id"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="LinkedInUrl"
-                aria-describedby="LinkedInUrl"
-                placeholder="Enter the LinkedInUrl"
-              />
-            </div>
-            <br></br>
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control input"
-                id="Profile"
-                aria-describedby="Profile"
-                placeholder="Enter the Profile Picture Url"
-              />
-            </div>
-            <br></br>
-            <br></br>
-            <input
-              type="submit"
-              value="Update Profile"
-              className="btn text-dark text-center LoginButton"
-            />
-            <br></br>
-            <br></br>
-            <br></br>
-            {/* <Link to="/main"> go </Link> */}
-          </form>
-        </div>
-        <div className="col-md-2"></div>
-        <form className="text-center">
-          <input
-            type="text"
-            className="form-control input"
-            id="EmailId"
-            aria-describedby="EmailId"
-            placeholder="Enter the Email Id"
-            style={{ marginLeft: 700, marginTop: 100 }}
-          />
-          <input
-            type="submit"
-            value="Delete Profile"
-            className="btn text-dark text-center DeleteButton"
-          />
-        </form>
-      </div>
     </div>
-  );
+  )
 }
 
-export default Profile;
+
+export default History;
