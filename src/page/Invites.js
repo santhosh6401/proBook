@@ -138,7 +138,7 @@ function SignInForm() {
       >
         <Container maxWidth="sm" className={classes.container}>
           <Typography variant="h4" align="center" className={classes.fonts}>
-            <br/>
+            <br />
             Send Invitation for Individual
           </Typography>
           <br />
@@ -152,7 +152,6 @@ function SignInForm() {
               onChange={(e) => setEmail(e.target.value)}
             />
             <br />
-            <br />
             <TextField
               label="subject"
               type="subject"
@@ -161,7 +160,6 @@ function SignInForm() {
               onChange={(e) => setSubject(e.target.value)}
             />
             <br />
-            <br />
             <TextField
               label="message"
               type="message"
@@ -169,8 +167,6 @@ function SignInForm() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-            <br />
-            <br />
             <br />
             <br />
             <Button
@@ -185,11 +181,11 @@ function SignInForm() {
         </Container>
         <Container maxWidth="sm" className={classes.container}>
           <Typography variant="h4" align="center" className={classes.fonts}>
-            <br/>
+            <br />
             Send Invitation for Batch
           </Typography>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <form onSubmit={handleSubmitBatch} className={classes.form}>
             <TextField
               label="Batch"
@@ -198,6 +194,7 @@ function SignInForm() {
               value={batch}
               onChange={(e) => setBatch(e.target.value)}
             />
+            <br />
             <TextField
               label="subject"
               type="subject"
@@ -205,6 +202,7 @@ function SignInForm() {
               value={batchSubject}
               onChange={(e) => setBatchSubject(e.target.value)}
             />
+            <br/>
             <TextField
               label="message"
               type="message"
@@ -212,7 +210,8 @@ function SignInForm() {
               value={batchMessage}
               onChange={(e) => setBatchMessage(e.target.value)}
             />
-
+            <br/>
+            <br/>
             <Button
               type="submit"
               variant="contained"

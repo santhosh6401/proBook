@@ -73,10 +73,10 @@ export default function Allprofiles() {
       });
   }, []);
 
-  const handleOpen = () => {
+  const handleOpen = (index) => {
     setLoading(true);
     setDialogOpen(true);
-    setDataIndex(0);
+    setDataIndex(index);
     setLoading(false);
   };
   const handleClose = () => {
@@ -95,10 +95,8 @@ export default function Allprofiles() {
         }}
         sm={24}
       >
-        
         {profile.map((item, index) => (
           <>
-          
             <Grid
               style={{
                 display: "flex",
@@ -107,10 +105,10 @@ export default function Allprofiles() {
                 marginLeft: "15px",
               }}
             >
-              <br/>
+              <br />
               <Card
                 sx={{
-                  minWidth: 100,
+                  minWidth: 150,
                   height: "80%",
                   borderRadius: "15px",
                   boxShadow: "5px 5px 5px 3px #8b3471",
@@ -150,14 +148,26 @@ export default function Allprofiles() {
                   <br />
 
                   <Typography
-                    style={{fontWeight: 650 , fontFamily: "Monospace" }}
-                  className="text-center">
+                    style={{ fontWeight: 650, fontFamily: "Monospace" }}
+                    className="text-center"
+                  >
                     {item.firstname} {item.lastname} ( {item.department} )
                   </Typography>
-                  <br/>
-                  <Typography style={{fontFamily: "Cursive",fontSize:"12px" ,fontWeight:400}} className="text-center">{item.latestCompanyDetails.company}</Typography>
-                  <br/>
-                  <Typography style={{ margin: "0px 0px 0px 77px" ,fontFamily: ""}}>
+                  <br />
+                  <Typography
+                    style={{
+                      fontFamily: "Cursive",
+                      fontSize: "12px",
+                      fontWeight: 400,
+                    }}
+                    className="text-center"
+                  >
+                    {item.latestCompanyDetails.company}
+                  </Typography>
+                  <br />
+                  <Typography
+                    style={{ margin: "0px 0px 0px 77px", fontFamily: "" }}
+                  >
                     {item.batch}
                   </Typography>
                   <br></br>
@@ -169,12 +179,16 @@ export default function Allprofiles() {
                       marginTop: "10px",
                       width: "60%",
                       fontWeight: 600,
-                      fontSize:"13px"
+                      fontSize: "13px",
                     }}
                     disabled={loading}
-                    onClick={handleOpen}
+                    onClick={() => {
+                      handleOpen(item.indexCount);
+                    }}
                   >
-                    <Typography style = {{fontFamily: "Monospace"}} >Learn...</Typography>
+                    <Typography style={{ fontFamily: "Monospace" }}>
+                      Learn...
+                    </Typography>
                   </Button>
                 </CardContent>
               </Card>
@@ -188,8 +202,13 @@ export default function Allprofiles() {
           onClose={handleClose}
           aria-labelledby="responsive-dialog-title"
         >
-          <DialogTitle id="responsive-dialog-title">
-            {profile[indexData]?.firstname} {profile[indexData]?.lastname}
+          <DialogTitle
+            id="responsive-dialog-title"
+            style={{ color: "#581845" }}
+          >
+            <b>
+              {profile[indexData]?.firstname} {profile[indexData]?.lastname}
+            </b>
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -200,23 +219,79 @@ export default function Allprofiles() {
               >
                 Mobile No:
               </Typography>
-              <br/>
+              <br />
               <Typography> {profile[indexData]?.mobileNo}</Typography>
-              <br/>
+              <br />
               <Typography style={{ fontWeight: 700 }}> Email ID :</Typography>
-              <br/>              <Typography> {profile[indexData]?.emailId}</Typography>
               <br/>
+              <Typography> {profile[indexData]?.emailId}</Typography>
+              <br />
               <Typography style={{ fontWeight: 700 }}>
                 LinkedIn URL :
               </Typography>
-              <br/>
+              <br />
               <Typography>{profile[indexData]?.linkedInUrl}</Typography>
-              <br/>
+              <br />
+              <Typography style={{ fontWeight: 700 }}>Batch :</Typography>
+              <br />
+              <Typography>{profile[indexData]?.batch}</Typography>
+              <br />
+              <Typography style={{ fontWeight: 700 }}>Department :</Typography>
+              <br />
+              <Typography>{profile[indexData]?.department}</Typography>
+              <br />
+              <Typography style={{ fontWeight: 700 }}>
+                Company Name :
+              </Typography>
+              <br />
+              <Typography>
+                {profile[indexData]?.latestCompanyDetails.company}
+              </Typography>
+              <br />
               <Typography style={{ fontWeight: 700 }}>
                 Current Occupation :
               </Typography>
-              <br/>
-              <Typography>{profile[indexData]?.currentOccupation}</Typography>
+              <br />
+              <Typography>
+                {profile[indexData]?.latestCompanyDetails.title}
+              </Typography>
+              <br />
+              <Typography style={{ fontWeight: 700 }}>
+                Company Location :
+              </Typography>
+              <br />
+              <Typography>
+                {profile[indexData]?.latestCompanyDetails.location}
+              </Typography>
+              <br />
+              <Typography style={{ fontWeight: 700 }}>
+                Company LinkedIn Url :
+              </Typography>
+              <br />
+              <Typography>
+                {
+                  profile[indexData]?.latestCompanyDetails
+                    .company_linkedin_profile_url
+                }
+              </Typography>
+              <br />
+              <Typography style={{ fontWeight: 700 }}>
+                Started Date :
+              </Typography>
+              <br />
+              <Typography>
+                {profile[indexData]?.latestCompanyDetails.starts_at.day} /{" "}
+                {profile[indexData]?.latestCompanyDetails.starts_at.month} /{" "}
+                {profile[indexData]?.latestCompanyDetails.starts_at.year}{" "}
+              </Typography>
+              <br />
+              <Typography style={{ fontWeight: 700 }}>
+                Worked Comapny Details :
+              </Typography>
+              <br />
+              <Typography>
+                {profile[indexData]?.workedCompaniesCount}
+              </Typography>
               {/* <Typography>
                 LinkedIn Url :{profile[indexData]?.linkedInUrl}
               </Typography>
@@ -226,7 +301,11 @@ export default function Allprofiles() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={handleClose} style={{color:"#581845"}}>
+            <Button
+              autoFocus
+              onClick={handleClose}
+              style={{ color: "#581845" }}
+            >
               cancel
             </Button>
             {/* <Button onClick={handleClose} autoFocus>
