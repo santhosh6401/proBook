@@ -223,7 +223,7 @@ export default function Allprofiles() {
               <Typography> {profile[indexData]?.mobileNo}</Typography>
               <br />
               <Typography style={{ fontWeight: 700 }}> Email ID :</Typography>
-              <br/>
+              <br />
               <Typography> {profile[indexData]?.emailId}</Typography>
               <br />
               <Typography style={{ fontWeight: 700 }}>
@@ -245,7 +245,9 @@ export default function Allprofiles() {
               </Typography>
               <br />
               <Typography>
-                {profile[indexData]?.latestCompanyDetails.company}
+                {profile[indexData]?.latestCompanyDetails.company !== null
+                  ? profile[indexData]?.latestCompanyDetails.company
+                  : "NA"}
               </Typography>
               <br />
               <Typography style={{ fontWeight: 700 }}>
@@ -253,7 +255,9 @@ export default function Allprofiles() {
               </Typography>
               <br />
               <Typography>
-                {profile[indexData]?.latestCompanyDetails.title}
+                {profile[indexData]?.latestCompanyDetails.title !== null
+                  ? profile[indexData]?.latestCompanyDetails.title
+                  : "NA"}
               </Typography>
               <br />
               <Typography style={{ fontWeight: 700 }}>
@@ -261,7 +265,9 @@ export default function Allprofiles() {
               </Typography>
               <br />
               <Typography>
-                {profile[indexData]?.latestCompanyDetails.location}
+                {profile[indexData]?.latestCompanyDetails.location !== null
+                  ? profile[indexData]?.latestCompanyDetails.location
+                  : "NA"}
               </Typography>
               <br />
               <Typography style={{ fontWeight: 700 }}>
@@ -269,10 +275,11 @@ export default function Allprofiles() {
               </Typography>
               <br />
               <Typography>
-                {
-                  profile[indexData]?.latestCompanyDetails
-                    .company_linkedin_profile_url
-                }
+                {profile[indexData]?.latestCompanyDetails
+                  .company_linkedin_profile_url !== null
+                  ? profile[indexData]?.latestCompanyDetails
+                      .company_linkedin_profile_url
+                  : "NA"}
               </Typography>
               <br />
               <Typography style={{ fontWeight: 700 }}>
@@ -280,9 +287,21 @@ export default function Allprofiles() {
               </Typography>
               <br />
               <Typography>
-                {profile[indexData]?.latestCompanyDetails.starts_at.day} /{" "}
-                {profile[indexData]?.latestCompanyDetails.starts_at.month} /{" "}
-                {profile[indexData]?.latestCompanyDetails.starts_at.year}{" "}
+                {profile[indexData]?.latestCompanyDetails.starts_at !== null &&
+                profile[indexData]?.latestCompanyDetails.starts_at.day !== null
+                  ? profile[indexData]?.latestCompanyDetails.starts_at.day + "/"
+                  : ""}
+                {profile[indexData]?.latestCompanyDetails.starts_at !== null &&
+                profile[indexData]?.latestCompanyDetails.starts_at.month !==
+                  null
+                  ? profile[indexData]?.latestCompanyDetails.starts_at.month +
+                    "/"
+                  : ""}
+                {profile[indexData]?.latestCompanyDetails.starts_at !== null &&
+                profile[indexData]?.latestCompanyDetails.starts_at.year !== null
+                  ? profile[indexData]?.latestCompanyDetails.starts_at.year +
+                    "/"
+                  : " "}
               </Typography>
               <br />
               <Typography style={{ fontWeight: 700 }}>
